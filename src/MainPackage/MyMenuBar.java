@@ -17,7 +17,9 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
 
     JCheckBoxMenuItem showAxes = new JCheckBoxMenuItem("Показать оси координат",true);
     JCheckBoxMenuItem showPoints = new JCheckBoxMenuItem("Показать маркеры точек",true);
+    JCheckBoxMenuItem showLabels = new JCheckBoxMenuItem("Показать подписи координат",false);
     JMenuItem turnGraphics = new JMenuItem("Повернуть графикa");
+    JMenuItem turnAtZero = new JMenuItem("Вернуть график в исходное положение");
 
     private GraphicsDisplay _display;
     JFileChooser fileChooser = null;
@@ -33,11 +35,18 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
 
         showPoints.addActionListener(e -> _display.setShowMarkers(showPoints.getState()));
         showAxes.addActionListener(e -> _display.setShowAxis(showAxes.getState()));
+        showLabels.addActionListener(e -> _display.setShowLabels(showLabels.getState()));
         turnGraphics.addActionListener(this);
+        turnAtZero.addActionListener(e ->{
+            _display.setTurnGraphics(0, false);
+            _display.showGraphics(graphicsData);
+        });
 
         graphicMenu.add(showAxes);
         graphicMenu.add(showPoints);
+        graphicMenu.add(showLabels);
         graphicMenu.add(turnGraphics);
+        graphicMenu.add(turnAtZero);
 
         fileMenu.add(loadItem);
         fileMenu.add(saveItem);
@@ -73,7 +82,7 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
 
             double angel = Double.parseDouble(result);
 
-            _display.setTurnGraphics(angel);
+            _display.setTurnGraphics(angel, false);
         }
     }
 
@@ -136,7 +145,10 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
     public void setVisible(boolean visible){
         showAxes.setEnabled(visible);
         showPoints.setEnabled(visible);
+        showLabels.setEnabled(visible);
         saveItem.setEnabled(visible);
         turnGraphics.setEnabled(visible);
+        turnAtZero.setEnabled(visible);
+
     }
 }
